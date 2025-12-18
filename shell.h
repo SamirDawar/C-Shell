@@ -6,7 +6,7 @@
 
 
 
-//function signatures
+//function prototypes
 void lsh_loop(void);
 char *lsh_read_line(void);
 void lsh_split_line(char *line);
