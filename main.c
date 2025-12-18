@@ -31,7 +31,7 @@ void lsh_loop(void)
 char *lsh_read_line(void) {
   int bufsize = LSH_RL_BUFSIZE;
   int position = 0;
-  char *buffer = malloc(buffer * sizeof(char));
+  char *buffer = malloc(bufsize * sizeof(char));
   int c;
 
   if(!buffer) {
@@ -57,7 +57,7 @@ char *lsh_read_line(void) {
       bufsize += LSH_RL_BUFSIZE;
       buffer = realloc(buffer, bufsize);
 
-      if (!bufsize) {
+      if (!buffer) {
         fprintf(stderr, "lsh: allocation error\n");
         exit(EXIT_FAILURE);
       }
@@ -70,7 +70,7 @@ char *lsh_read_line(void) {
 #define LSH_TOK_DELIM " \t\r\n\a"
 char **lsh_split_line(char *line) {
   int bufsize = LSH_TOK_BUFSIZE, position = 0;
-  char **tokens = malloc(bufsize * sizeof(*char));
+  char **tokens = malloc(bufsize * sizeof(char*));
   char token;
   
   if (!tokens) {
@@ -114,10 +114,20 @@ int lsh_launch(char **args) {
   } else {
     //parent  process 
     do {
-      wpid = waitpid(pid, &stats, WUNTRACED);
+      wpid = waitpid(pid, &status, WUNTRACED);
     } while (!WIFEXITED(status) && !WIFSIGNALED(status));
   }
   return 1;
 }
 
+char *builtin_str[] = {
+  "cd",
+  "help",
+  "exit"
+};
 
+int (*builtin_func[]) (char **) = {
+  &lsh_cd,
+  &lsh_help,
+  &lsh_exit
+};

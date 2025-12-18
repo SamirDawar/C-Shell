@@ -5,12 +5,14 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-
-
-//function prototypes
 void lsh_loop(void);
 char *lsh_read_line(void);
-void lsh_split_line(char *line);
-int lsh_execute(char *args);
+char **lsh_split_line(char *line);
+char lsh_launch(char **args);
+
+//shell function
+int lsh_cd(char **args);
+int lsh_help(char **args);
+int lsh_exit(char **args);
 
 #endif
