@@ -3,29 +3,26 @@
 int main(int argc, char **argv){
 
   
-  lsh_loop();
-
+  printf("Hello World");
   return EXIT_SUCCESS;
 }
 
 
-void lsh_loop(void) {
+void lsh_loop(void)
+{
   char *line;
   char **args;
   int status;
 
   do {
-    printf("lshell> ");
+    printf("> ");
     line = lsh_read_line();
     args = lsh_split_line(line);
     status = lsh_execute(args);
 
-
-
     free(line);
     free(args);
-
-  } while(status);
+  } while (status);
 }
 
 
@@ -56,9 +53,9 @@ char *lsh_read_line(void) {
     position++;
     
     //if we have exceeded the buffer, reallocate
-    if (position >= buffsize) {
+    if (position >= bufsize) {
       bufsize += LSH_RL_BUFSIZE;
-      buffer = realloc(buffer, buffsize);
+      buffer = realloc(buffer, bufsize);
 
       if (!bufsize) {
         fprintf(stderr, "lsh: allocation error\n");
